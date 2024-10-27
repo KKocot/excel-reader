@@ -1,5 +1,5 @@
-import { Item } from "@/App";
 import { TableBody, TableCell, TableRow } from "@/components/ui/table";
+import { Item } from "@/lib/types";
 import clsx from "clsx";
 
 const TableBodyArea = ({ data }: { data: Item[] }) => {
@@ -9,7 +9,20 @@ const TableBodyArea = ({ data }: { data: Item[] }) => {
         return (
           <TableRow key={index}>
             <TableCell>
-              {element.school.replace("Szkoła Podstawowa", "SP")}
+              {element.school
+                .replace("Szkoła Podstawowa nr", "SP")
+                .replace("Dowolna ", "")
+                .replace("Częstochowa ", "Cz")
+                .replace("Dąbrowa Górnicza ", "DB")
+                .replace("Katowice ", "Kat")
+                .replace("Jaworzno ", "JW")
+                .replace("Siemianowice Śląskie ", "Siem")
+                .replace("Gliwice", "Gl")
+                .replace("Rybnik", "Rb")
+                .replace("Sosnowiec", "So")
+                .replace("Tarnowskie Góry", "TG")
+                .replace("Bielsko-Biała", "BB")
+                .replace("Tychy", "Tch")}
             </TableCell>
             <TableCell>{element.id}</TableCell>
             <TableCell>{element.name}</TableCell>
