@@ -10,19 +10,20 @@ const TableBodyArea = ({ data }: { data: Item[] }) => {
           <TableRow key={index}>
             <TableCell>
               {element.school
-                .replace("Szkoła Podstawowa nr", "SP")
-                .replace("Dowolna ", "")
+                .replace(" Dowolna Szkoła Podstawowa", "DSP")
+                .replace(" Szkoła Podstawowa ", "SP")
+                .replace("nr ", "")
                 .replace("Częstochowa ", "Cz")
                 .replace("Dąbrowa Górnicza ", "DB")
                 .replace("Katowice ", "Kat")
                 .replace("Jaworzno ", "JW")
                 .replace("Siemianowice Śląskie ", "Siem")
-                .replace("Gliwice", "Gl")
-                .replace("Rybnik", "Rb")
-                .replace("Sosnowiec", "So")
-                .replace("Tarnowskie Góry", "TG")
-                .replace("Bielsko-Biała", "BB")
-                .replace("Tychy", "Tch")}
+                .replace("Gliwice ", "Gl")
+                .replace("Rybnik ", "Rb")
+                .replace("Sosnowiec ", "So")
+                .replace("Tarnowskie Góry ", "TG")
+                .replace("Bielsko-Biała ", "BB")
+                .replace("Tychy ", "Tch")}
             </TableCell>
             <TableCell>{element.id}</TableCell>
             <TableCell>{element.name}</TableCell>
@@ -34,7 +35,10 @@ const TableBodyArea = ({ data }: { data: Item[] }) => {
                   element.recrutmentStatus === "Zaproszony na spotkanie",
               })}
             >
-              {element.recrutmentStatus}
+              {element.recrutmentStatus.replace(
+                "Zaproszony na spotkanie",
+                "Zaproszony"
+              )}
             </TableCell>
             <TableCell
               className={clsx("bg-gray-400", {
@@ -50,7 +54,10 @@ const TableBodyArea = ({ data }: { data: Item[] }) => {
                   element.dezactivationReason === "Brak warunków nadania roli",
               })}
             >
-              {element.dezactivationReason}
+              {element.dezactivationReason.replace(
+                "Brak warunków nadania roli",
+                "BWNR"
+              )}
             </TableCell>
             <TableCell
               className={clsx("bg-green-400", {
