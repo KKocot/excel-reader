@@ -43,19 +43,19 @@ interface IExcelData {
   __EMPTY_34: string;
   __rowNum__: number;
 }
-interface Kwap {
-  kwap1: Item[];
-  kwap2: Item[];
-  kwap3: Item[];
-  kwap4: Item[];
-  kwap5: Item[];
-  kwap6: Item[];
-  kwap7: Item[];
-  kwap8: Item[];
-  kwap9: Item[];
-  kwap10: Item[];
-  kwap11: Item[];
-}
+// interface Kwap {
+//   kwap1: Item[];
+//   kwap2: Item[];
+//   kwap3: Item[];
+//   kwap4: Item[];
+//   kwap5: Item[];
+//   kwap6: Item[];
+//   kwap7: Item[];
+//   kwap8: Item[];
+//   kwap9: Item[];
+//   kwap10: Item[];
+//   kwap11: Item[];
+// }
 export interface Item {
   school: string;
   id: number;
