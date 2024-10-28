@@ -41,4 +41,7 @@ export const kwap_list = {
     "Tychy / Szkoła Podstawowa nr 17",
     "Bielsko-Biała / Dowolna Szkoła Podstawowa",
   ],
+  kwap12: ["Opole / Szkoła Podstawowa nr 2", "Nysa / Szkoła Podstawowa nr 3"],
+  kwap13: ["Prudnik / Szkoła Podstawowa nr 3"],
+  kwap14: ["Opole / Szkoła Podstawowa nr 21", "Opole / Szkoła Podstawowa nr 7"],
 };

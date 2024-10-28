@@ -7,6 +7,7 @@ import TableBodyArea from "./components/table-body-area";
 import { IExcelData, Item } from "./lib/types";
 import { getSchoolName } from "./lib/utils";
 import { kwap_list } from "./lib/assets";
+import DownloadButton from "./components/download-button";
 
 function App() {
   const [excelFile, setExcelFile] = useState<ArrayBuffer | null>(null);
@@ -91,6 +92,9 @@ function App() {
         kwap9: getSchoolName(short_list, kwap_list.kwap9),
         kwap10: getSchoolName(short_list, kwap_list.kwap10),
         kwap11: getSchoolName(short_list, kwap_list.kwap11),
+        kwap12: getSchoolName(short_list, kwap_list.kwap12),
+        kwap13: getSchoolName(short_list, kwap_list.kwap13),
+        kwap14: getSchoolName(short_list, kwap_list.kwap14),
       }
     : null;
   return (
@@ -101,20 +105,47 @@ function App() {
         <Button type="submit">UPLOAD</Button>
         {typeError && <div role="alert">{typeError}</div>}
       </form>
+      {short_list ? (
+        <DownloadButton kwap={short_list} title="Pobierz wszystkich" />
+      ) : null}
+
       <div>
         {kwaps ? (
-          <div className="flex gap-1">
-            <Button onClick={() => setKwapTeam(kwaps.kwap1)}>KWAP 1</Button>
-            <Button onClick={() => setKwapTeam(kwaps.kwap2)}>KWAP 2</Button>
-            <Button onClick={() => setKwapTeam(kwaps.kwap3)}>KWAP 3</Button>
-            <Button onClick={() => setKwapTeam(kwaps.kwap4)}>KWAP 4</Button>
-            <Button onClick={() => setKwapTeam(kwaps.kwap5)}>KWAP 5</Button>
-            <Button onClick={() => setKwapTeam(kwaps.kwap6)}>KWAP 6</Button>
-            <Button onClick={() => setKwapTeam(kwaps.kwap7)}>KWAP 7</Button>
-            <Button onClick={() => setKwapTeam(kwaps.kwap8)}>KWAP 8</Button>
-            <Button onClick={() => setKwapTeam(kwaps.kwap9)}>KWAP 9</Button>
-            <Button onClick={() => setKwapTeam(kwaps.kwap10)}>KWAP 10</Button>
-            <Button onClick={() => setKwapTeam(kwaps.kwap11)}>KWAP 11</Button>
+          <div>
+            <div>
+              <div className="text-xl font-bold">KWAP Slask</div>
+              <div className="flex gap-1">
+                <Button onClick={() => setKwapTeam(kwaps.kwap1)}>KWAP 1</Button>
+                <Button onClick={() => setKwapTeam(kwaps.kwap2)}>KWAP 2</Button>
+                <Button onClick={() => setKwapTeam(kwaps.kwap3)}>KWAP 3</Button>
+                <Button onClick={() => setKwapTeam(kwaps.kwap4)}>KWAP 4</Button>
+                <Button onClick={() => setKwapTeam(kwaps.kwap5)}>KWAP 5</Button>
+                <Button onClick={() => setKwapTeam(kwaps.kwap6)}>KWAP 6</Button>
+                <Button onClick={() => setKwapTeam(kwaps.kwap7)}>KWAP 7</Button>
+                <Button onClick={() => setKwapTeam(kwaps.kwap8)}>KWAP 8</Button>
+                <Button onClick={() => setKwapTeam(kwaps.kwap9)}>KWAP 9</Button>
+                <Button onClick={() => setKwapTeam(kwaps.kwap10)}>
+                  KWAP 10
+                </Button>
+                <Button onClick={() => setKwapTeam(kwaps.kwap11)}>
+                  KWAP 11
+                </Button>
+              </div>
+            </div>
+            <div>
+              <div className="text-xl font-bold">KWAP Opolskie</div>
+              <div className="flex gap-1">
+                <Button onClick={() => setKwapTeam(kwaps.kwap12)}>
+                  KWAP 12
+                </Button>
+                <Button onClick={() => setKwapTeam(kwaps.kwap13)}>
+                  KWAP 13
+                </Button>
+                <Button onClick={() => setKwapTeam(kwaps.kwap14)}>
+                  KWAP 14
+                </Button>
+              </div>
+            </div>{" "}
           </div>
         ) : null}
         {kwapTeam ? (
@@ -143,7 +174,9 @@ function App() {
             </Table>
           </div>
         ) : (
-          <div>No File is uploaded yet!</div>
+          <>
+            <div>No File is uploaded yet!</div>
+          </>
         )}
       </div>
     </div>
