@@ -1,7 +1,7 @@
 import { TableBody, TableCell, TableRow } from "@/components/ui/table";
 import { Item } from "@/lib/types";
 import clsx from "clsx";
-import DownloadButton from "./download-button";
+import DownloadButtonRcrutationRaport from "./download-button";
 
 const TableBodyArea = ({ data }: { data: Item[] }) => {
   return (
@@ -128,7 +128,7 @@ const TableBodyArea = ({ data }: { data: Item[] }) => {
           );
         })}
       </TableBody>
-      <DownloadButton kwap={data} title="Pobierz tego KWAPa" />
+      <DownloadButtonRcrutationRaport kwap={data} title="Pobierz tego KWAPa" />
     </>
   );
 };

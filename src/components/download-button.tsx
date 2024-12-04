@@ -8,7 +8,10 @@ interface DownloadButtonProps {
   title: string;
 }
 
-const DownloadButton: FC<DownloadButtonProps> = ({ kwap, title }) => {
+const DownloadButtonRcrutationRaport: FC<DownloadButtonProps> = ({
+  kwap,
+  title,
+}) => {
   const handleDownloadExcel = () => {
     const workbook = XLSX.utils.book_new();
 
@@ -234,4 +237,4 @@ const DownloadButton: FC<DownloadButtonProps> = ({ kwap, title }) => {
   );
 };
 
-export default DownloadButton;
+export default DownloadButtonRcrutationRaport;
