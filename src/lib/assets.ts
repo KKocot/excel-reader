@@ -35,18 +35,20 @@ export const kwap_list = {
     "Sosnowiec / Szkoła Podstawowa nr 10 ",
   ],
   kwap10: [
-    "Tarnowskie Góry / Szkoła Podstawowa nr 3 ",
     "Tarnowskie Góry / Szkoła Podstawowa nr 8 ",
-    "Tarnowskie Góry / Szkoła Podstawowa nr 12 ",
     "Tarnowskie Góry / Szkoła Podstawowa nr 10 ",
   ],
   kwap11: [
+    "Tarnowskie Góry / Szkoła Podstawowa nr 3 ",
+    "Tarnowskie Góry / Szkoła Podstawowa nr 12 ",
+  ],
+  kwap12: [
     "Tychy / Szkoła Podstawowa nr 17 ",
     "Bielsko-Biała / Dowolna Szkoła Podstawowa ",
   ],
-  kwap12: ["Opole / Szkoła Podstawowa nr 2 ", "Nysa / Szkoła Podstawowa nr 3 "],
-  kwap13: ["Prudnik / Szkoła Podstawowa nr 3 "],
-  kwap14: [
+  kwap13: ["Opole / Szkoła Podstawowa nr 2 ", "Nysa / Szkoła Podstawowa nr 3 "],
+  kwap14: ["Prudnik / Szkoła Podstawowa nr 3 "],
+  kwap15: [
     "Opole / Szkoła Podstawowa nr 21 ",
     "Opole / Szkoła Podstawowa nr 7 ",
   ],
