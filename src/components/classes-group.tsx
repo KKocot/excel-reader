@@ -62,7 +62,7 @@ const ClassesGroup = ({ jsonResult }: { jsonResult: ClassesGroupProps[] }) => {
                     startOfWeek(
                       new Date(
                         new Date().setDate(
-                          new Date().getDate() + (missingWeek - today) * 7 + 1
+                          new Date().getDate() + (missingWeek - today) * 7 - 6
                         )
                       )
                     ),
@@ -71,7 +71,7 @@ const ClassesGroup = ({ jsonResult }: { jsonResult: ClassesGroupProps[] }) => {
                     endOfWeek(
                       new Date(
                         new Date().setDate(
-                          new Date().getDate() + (missingWeek - today) * 7 + 1
+                          new Date().getDate() + (missingWeek - today) * 7 - 6
                         )
                       )
                     ),
