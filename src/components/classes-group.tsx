@@ -22,7 +22,6 @@ const ClassesGroup = ({ jsonResult }: { jsonResult: ClassesGroupProps[] }) => {
   const sortedByPairs = createdObjects.filter(
     (e) => e.class && e.class !== "karta"
   );
-
   const transformedData = sortedByPairs.reduce((acc: Item[], curr) => {
     const existingPair = acc.find((item) => item.pair === curr.pair);
     if (existingPair) {
@@ -31,14 +30,13 @@ const ClassesGroup = ({ jsonResult }: { jsonResult: ClassesGroupProps[] }) => {
       acc.push({
         pair: curr.pair,
         connected: Number(
-          getWeek(curr.pair.split(" ")[curr.pair.split(" ").length - 1]) + 1
+          getWeek(curr.pair.split(" ")[curr.pair.split(" ").length - 1])
         ),
         classes: [getWeek(curr.date)],
       });
     }
     return acc;
   }, []);
-
   return (
     <div>
       <h1 className="font-bold">{jsonResult[0].Textbox5.split("\r")[0]}</h1>

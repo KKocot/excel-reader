@@ -12,13 +12,18 @@ const ClassesGroupPairs = ({
   };
 }) => {
   const today = getWeek(new Date()) - 1;
-  const [missingWeeks, setMissingWeeks] = useState(
-    Array.from(
-      { length: today - item.connected + 1 },
-      (_, i) => item.connected + i
-    ).filter((week) => !item.classes.includes(week))
+  const connectedDate = item.connected + 2;
+  +2;
+  const lastYear = Array.from(
+    { length: 52 - connectedDate + 1 },
+    (_, i) => connectedDate + i
   );
-
+  const currentYeat = Array.from({ length: today }, (_, i) => i + 1);
+  const weeksArray = [...lastYear, ...currentYeat];
+  console.log(item.pair, item.connected, [...lastYear, ...currentYeat], today);
+  const [missingWeeks, setMissingWeeks] = useState(
+    weeksArray.filter((week) => item.classes.includes(week))
+  );
   const handleDelete = (week: number) => {
     setMissingWeeks((prev) => prev.filter((w) => w !== week));
   };
@@ -27,9 +32,10 @@ const ClassesGroupPairs = ({
     <div>
       <h2>
         {`${item.pair.split(" ").slice(0, 3).join(" ")} `}
-        <span className="font-semibold" title="tydzien">{`(${
-          item.connected - 1
-        })`}</span>
+        <span
+          className="font-semibold"
+          title="tydzien"
+        >{`(${item.connected})`}</span>
       </h2>
       <ul>
         {missingWeeks.map((missingWeek) => (
