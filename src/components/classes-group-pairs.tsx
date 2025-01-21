@@ -13,17 +13,23 @@ const ClassesGroupPairs = ({
 }) => {
   const today = getWeek(new Date()) - 1;
   const connectedDate = item.connected + 2;
-  +2;
+  const startNewYear = item.connected <= today;
   const lastYear = Array.from(
     { length: 52 - connectedDate + 1 },
     (_, i) => connectedDate + i
   );
-  const currentYeat = Array.from({ length: today }, (_, i) => i + 1);
-  const weeksArray = [...lastYear, ...currentYeat];
-  console.log(item.pair, item.connected, [...lastYear, ...currentYeat], today);
+  const currentYear = Array.from({ length: today }, (_, i) => i + 1);
+
+  const weeksArray = startNewYear
+    ? Array.from(
+        { length: today - connectedDate + 1 },
+        (_, i) => connectedDate + i
+      )
+    : [...lastYear, ...currentYear];
   const [missingWeeks, setMissingWeeks] = useState(
-    weeksArray.filter((week) => item.classes.includes(week))
+    weeksArray.filter((week) => !item.classes.includes(week))
   );
+
   const handleDelete = (week: number) => {
     setMissingWeeks((prev) => prev.filter((w) => w !== week));
   };
