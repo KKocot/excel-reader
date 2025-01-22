@@ -14,7 +14,7 @@ export const kwap_list = {
   ],
   kwap4: [
     "Gliwice / Szkoła Podstawowa nr 28 ",
-    "Gliwice/ Szkoła Podstawowa nr 11 ",
+    "Gliwice / Szkoła Podstawowa nr 11 ",
   ],
   kwap5: ["Katowice / Szkoła Podstawowa nr 11 "],
   kwap6: [
@@ -27,7 +27,7 @@ export const kwap_list = {
   ],
   kwap8: [
     "Rybnik / Szkoła Podstawowa nr 3 ",
-    "Radlin/ Szkoła Podstawowa nr 4 ",
+    "Radlin / Szkoła Podstawowa nr 4 ",
   ],
   kwap9: [
     "Sosnowiec / Szkoła Podstawowa nr 3 ",

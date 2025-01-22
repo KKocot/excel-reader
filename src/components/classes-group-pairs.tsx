@@ -1,84 +1,53 @@
 import { addDays, endOfWeek, getWeek, startOfWeek } from "date-fns";
 import { Button } from "./ui/button";
-import { useState } from "react";
+import clsx from "clsx";
 
 const ClassesGroupPairs = ({
   item,
 }: {
   item: {
-    pair: string;
-    classes: number[];
-    connected: number;
-  };
+    week: number;
+    check: boolean;
+  }[];
 }) => {
-  const today = getWeek(new Date()) - 1;
-  const connectedDate = item.connected + 2;
-  const startNewYear = item.connected <= today;
-  const lastYear = Array.from(
-    { length: 52 - connectedDate + 1 },
-    (_, i) => connectedDate + i
-  );
-  const currentYear = Array.from({ length: today }, (_, i) => i + 1);
-
-  const weeksArray = startNewYear
-    ? Array.from(
-        { length: today - connectedDate + 1 },
-        (_, i) => connectedDate + i
-      )
-    : [...lastYear, ...currentYear];
-  const [missingWeeks, setMissingWeeks] = useState(
-    weeksArray.filter((week) => !item.classes.includes(week))
-  );
-
-  const handleDelete = (week: number) => {
-    setMissingWeeks((prev) => prev.filter((w) => w !== week));
-  };
-
+  const today = getWeek(new Date());
   return (
-    <div>
-      <h2>
-        {`${item.pair.split(" ").slice(0, 3).join(" ")} `}
-        <span
-          className="font-semibold"
-          title="tydzien"
-        >{`(${item.connected})`}</span>
-      </h2>
-      <ul>
-        {missingWeeks.map((missingWeek) => (
-          <li
-            key={missingWeek}
-            style={{ color: "red" }}
-            className="flex items-center gap-1"
-          >
-            {`${addDays(
+    <div className="flex">
+      {item.map((week) => (
+        <Button
+          key={week.week}
+          className={clsx("flex flex-col h-fit rounded-none p-1 gap-1", {
+            "bg-green-500": week.check,
+            "bg-red-500": !week.check,
+          })}
+        >
+          <span>
+            {addDays(
               startOfWeek(
                 new Date(
                   new Date().setDate(
-                    new Date().getDate() + (missingWeek - today) * 7 - 6
+                    new Date().getDate() + (week.week - today) * 7 - 6
                   )
                 )
               ),
               1
-            ).toLocaleDateString()}  - ${addDays(
+            ).toLocaleDateString()}
+          </span>
+          <span>
+            {addDays(
               endOfWeek(
                 new Date(
                   new Date().setDate(
-                    new Date().getDate() + (missingWeek - today) * 7 - 6
+                    new Date().getDate() + (week.week - today) * 7 - 6
                   )
                 )
               ),
               1
-            ).toLocaleDateString()} (${missingWeek})`}
-            <Button
-              variant="destructive"
-              className=" rounded-full w-1 h-1 p-2"
-              onClick={() => handleDelete(missingWeek)}
-            >
-              X
-            </Button>
-          </li>
-        ))}
-      </ul>
+            ).toLocaleDateString()}
+          </span>
+          <span>Tydzien: {week.week}</span>
+        </Button>
+      ))}
     </div>
   );
 };

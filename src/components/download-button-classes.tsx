@@ -1,4 +1,4 @@
-import { ClassesGroupProps } from "./classes-group";
+import { ClassesGroupProps } from "@/lib/raport-genarator";
 import { Button } from "./ui/button";
 
 const DownloadButtonClasses = ({

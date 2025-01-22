@@ -1,7 +1,7 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { Item } from "./types";
-import { ClassesGroupProps } from "@/components/classes-group";
+import { ClassesGroupProps } from "./raport-genarator";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));

@@ -7,7 +7,8 @@ import { Accordion, AccordionContent } from "@/components/ui/accordion";
 import { kwap_list } from "@/lib/assets";
 import { getSchool } from "@/lib/utils";
 import { AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-// import DownloadButtonClasses from "@/components/download-button-classes";
+import { raportGenarator } from "@/lib/raport-genarator";
+import { Button } from "@/components/ui/button";
 
 interface ParsedResult {
   data: any[];
@@ -32,28 +33,12 @@ const Classes = () => {
       });
     }
   };
-
-  const kwaps = jsonResult
-    ? [
-        getSchool(jsonResult, kwap_list.kwap1),
-        getSchool(jsonResult, kwap_list.kwap2),
-        getSchool(jsonResult, kwap_list.kwap3),
-        getSchool(jsonResult, kwap_list.kwap4),
-        getSchool(jsonResult, kwap_list.kwap5),
-        getSchool(jsonResult, kwap_list.kwap6),
-        getSchool(jsonResult, kwap_list.kwap7),
-        getSchool(jsonResult, kwap_list.kwap8),
-        getSchool(jsonResult, kwap_list.kwap9),
-        getSchool(jsonResult, kwap_list.kwap10),
-        getSchool(jsonResult, kwap_list.kwap11),
-        getSchool(jsonResult, kwap_list.kwap12),
-        getSchool(jsonResult, kwap_list.kwap13),
-        getSchool(jsonResult, kwap_list.kwap14),
-      ]
-    : null;
+  const sortKwaps = Object.values(kwap_list).map((e) =>
+    raportGenarator(getSchool(jsonResult, e))
+  );
 
   return (
-    <div className="p-4 flex flex-col items-center gap-8 w-fit min-w-full">
+    <div className="p-4 flex flex-col items-center gap-8 ">
       <h1 className="text-4xl font-bold">Zajecia</h1>
       <h2 className="text-xl font-bold">Obecny tydzien {today}</h2>
       <Input
@@ -63,38 +48,32 @@ const Classes = () => {
         className="w-1/2"
         multiple
       />
-      {/* <DownloadButtonClasses
-        label="Pobierz wszystkie"
-        data={kwaps ? kwaps.flat() : null}
-      /> */}
-      <Accordion type="multiple" className="w-2/3">
-        {kwaps
-          ? kwaps.map((list, index) => {
-              const title = list.map((e) =>
-                e[0].Textbox5.split("\r")[0].replace(" / Szkoła Podstawowa", "")
-              );
-              return list.length > 0 ? (
+      <a href="https://www.epochconverter.com/pl/tygodni/2025" target="_blank">
+        <Button>Kalendarz tygodni</Button>
+      </a>
+      <Accordion type="multiple" className="container">
+        {sortKwaps
+          ? sortKwaps.map((list, index) => {
+              return list && list?.length > 0 ? (
                 <AccordionItem value={`title-${index}`} key={`title-${index}`}>
                   <AccordionTrigger>
-                    <ul className="text-xl">
-                      {title.map((e) => (
-                        <li key={e}>{e}</li>
-                      ))}
+                    <ul className="text-xl w-full">
+                      <li className="flex justify-between" key={index}>
+                        {list?.map((e) => (
+                          <span key={e.title}>{e.title}</span>
+                        ))}
+                      </li>
                     </ul>
                   </AccordionTrigger>
-                  <AccordionContent className="w-full">
+                  <AccordionContent className="overflow-x-scroll">
                     {list.map((e) => (
-                      <ClassesGroup jsonResult={e} key={e[0].Textbox5} />
+                      <ClassesGroup schoolList={e} key={e.title} />
                     ))}
-                    {/* <DownloadButtonClasses
-                      label="Pobierz te szkoly"
-                      data={list}
-                    /> */}
                   </AccordionContent>
                 </AccordionItem>
               ) : null;
             })
-          : "Brak danych"}
+          : null}
       </Accordion>
     </div>
   );

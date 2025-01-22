@@ -1,47 +1,22 @@
-import { getWeek } from "date-fns";
 import ClassesGroupPairs from "./classes-group-pairs";
 
-interface Item {
-  pair: string;
-  classes: number[];
-  connected: number;
+interface ListProps {
+  title: string;
+  list: {
+    connected: number;
+    pair: string;
+    fullWeeks: { week: number; check: boolean }[];
+  }[];
 }
-export interface ClassesGroupProps {
-  Textbox5: string;
-  __parsed_extra: any[];
-}
-
-const ClassesGroup = ({ jsonResult }: { jsonResult: ClassesGroupProps[] }) => {
-  const createdObjects = jsonResult.map((e) => ({
-    week: e.Textbox5,
-    date: e.__parsed_extra ? e.__parsed_extra[0] : null,
-    pair: e.__parsed_extra ? e.__parsed_extra[1] : null,
-    class: e.__parsed_extra ? e.__parsed_extra[2] : null,
-  }));
-
-  const sortedByPairs = createdObjects.filter(
-    (e) => e.class && e.class !== "karta"
-  );
-  const transformedData = sortedByPairs.reduce((acc: Item[], curr) => {
-    const existingPair = acc.find((item) => item.pair === curr.pair);
-    if (existingPair) {
-      existingPair.classes.push(getWeek(curr.date));
-    } else {
-      acc.push({
-        pair: curr.pair,
-        connected: Number(
-          getWeek(curr.pair.split(" ")[curr.pair.split(" ").length - 1])
-        ),
-        classes: [getWeek(curr.date)],
-      });
-    }
-    return acc;
-  }, []);
+const ClassesGroup = ({ schoolList }: { schoolList: ListProps }) => {
   return (
     <div>
-      <h1 className="font-bold">{jsonResult[0].Textbox5.split("\r")[0]}</h1>
-      {transformedData.map((item, i) => (
-        <ClassesGroupPairs item={item} key={i} />
+      <h1 className="font-bold">{schoolList.title}</h1>
+      {schoolList.list.map((item) => (
+        <div key={item.pair}>
+          <div>{`${item.pair} (${item.connected})`}</div>
+          <ClassesGroupPairs item={item.fullWeeks} />
+        </div>
       ))}
     </div>
   );
