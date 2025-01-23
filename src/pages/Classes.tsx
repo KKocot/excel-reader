@@ -9,6 +9,7 @@ import { getSchool } from "@/lib/utils";
 import { AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { raportGenarator } from "@/lib/raport-genarator";
 import { Button } from "@/components/ui/button";
+import DownloadClassesRaport from "@/components/download-classes-raport";
 
 interface ParsedResult {
   data: any[];
@@ -33,12 +34,13 @@ const Classes = () => {
       });
     }
   };
-  const sortKwaps = Object.values(kwap_list).map((e) =>
+  const raport = Object.values(kwap_list).map((e) =>
     raportGenarator(getSchool(jsonResult, e))
   );
 
   return (
     <div className="p-4 flex flex-col items-center gap-8 ">
+      {raport ? <DownloadClassesRaport raport={raport} /> : null}
       <h1 className="text-4xl font-bold">Zajecia</h1>
       <h2 className="text-xl font-bold">Obecny tydzien {today}</h2>
       <Input
@@ -52,8 +54,8 @@ const Classes = () => {
         <Button>Kalendarz tygodni</Button>
       </a>
       <Accordion type="multiple" className="container">
-        {sortKwaps
-          ? sortKwaps.map((list, index) => {
+        {raport
+          ? raport.map((list, index) => {
               return list && list?.length > 0 ? (
                 <AccordionItem value={`title-${index}`} key={`title-${index}`}>
                   <AccordionTrigger>
