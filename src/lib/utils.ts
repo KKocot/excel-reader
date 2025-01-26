@@ -25,19 +25,19 @@ export const createDate = (week: number) => {
   const today = getWeek(new Date());
   const start = addDays(
     startOfWeek(
-      new Date(
-        new Date().setDate(new Date().getDate() + (week - today) * 7 - 6)
-      )
+      new Date(new Date().setDate(new Date().getDate() + (week - today) * 7))
     ),
     1
-  ).toLocaleDateString();
+  )
+    .toLocaleDateString()
+    .replace(today < week ? "2025" : "2024", "2024");
   const end = addDays(
     endOfWeek(
-      new Date(
-        new Date().setDate(new Date().getDate() + (week - today) * 7 - 6)
-      )
+      new Date(new Date().setDate(new Date().getDate() + (week - today) * 7))
     ),
     1
-  ).toLocaleDateString();
+  )
+    .toLocaleDateString()
+    .replace(today < week ? "2025" : "2024", "2024");
   return { start, end };
 };
