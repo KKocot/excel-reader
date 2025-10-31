@@ -15,40 +15,34 @@ interface Raport {
   }[];
 }
 
-const DownloadClassesRaport: FC<{ raport: (Raport[] | null)[] }> = ({
-  raport,
-}) => {
+const DownloadClassesRaport: FC<{ raport: Raport[] }> = ({ raport }) => {
   const handleDownloadExcel = () => {
     const workbook = XLSX.utils.book_new();
-    const rows = raport.flatMap((e) => {
-      return (
-        e?.flatMap((el) => {
-          return el.list.map((l) => {
-            return [
-              { v: el.title, t: "s" },
-              { v: l.pair, t: "s" },
-              { v: l.connected, t: "n" },
-              ...l.fullWeeks.map((week) => {
-                const dates = createDate(week.week);
-                return {
-                  v: week.check
-                    ? week.week
-                    : `${dates.start}-${dates.end} (${week.week})`,
-                  t: "s",
-                  s: {
-                    fill: {
-                      patternType: "solid",
-                      fgColor: {
-                        rgb: week.check ? "FF00FF00" : "FFFF0000",
-                      },
-                    },
+    const rows = raport.flatMap((el) => {
+      return el.list.map((l) => {
+        return [
+          { v: el.title, t: "s" },
+          { v: l.pair, t: "s" },
+          { v: l.connected, t: "n" },
+          ...l.fullWeeks.map((week) => {
+            const dates = createDate(week.week);
+            return {
+              v: week.check
+                ? week.week
+                : `${dates.start}-${dates.end} (${week.week})`,
+              t: "s",
+              s: {
+                fill: {
+                  patternType: "solid",
+                  fgColor: {
+                    rgb: week.check ? "FF00FF00" : "FFFF0000",
                   },
-                };
-              }),
-            ];
-          });
-        }) || []
-      );
+                },
+              },
+            };
+          }),
+        ];
+      });
     });
     const header = [
       { v: "Szkola", t: "s", s: { font: { bold: true } } },
