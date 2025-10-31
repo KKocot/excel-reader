@@ -4,12 +4,10 @@ import Papa from "papaparse";
 import { getWeek } from "date-fns";
 import ClassesGroup from "@/components/classes-group";
 import { Accordion, AccordionContent } from "@/components/ui/accordion";
-import { kwap_list } from "@/lib/assets";
 import { getSchool } from "@/lib/utils";
 import { AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { raportGenarator } from "@/lib/raport-genarator";
 import { Button } from "@/components/ui/button";
-import DownloadClassesRaport from "@/components/download-classes-raport";
 
 interface ParsedResult {
   data: any[];
@@ -34,13 +32,12 @@ const Classes = () => {
       });
     }
   };
-  const raport = Object.values(kwap_list).map((e) =>
-    raportGenarator(getSchool(jsonResult, e))
-  );
+  const raport = raportGenarator(getSchool(jsonResult));
 
+  console.log("Raport Test: ", raport);
   return (
     <div className="p-4 flex flex-col items-center gap-8 ">
-      {raport ? <DownloadClassesRaport raport={raport} /> : null}
+      {/* {raport ? <DownloadClassesRaport raport={raport} /> : null} */}
       <h1 className="text-4xl font-bold">Zajecia</h1>
       <h2 className="text-xl font-bold">Obecny tydzien {today}</h2>
       <Input
@@ -55,26 +52,20 @@ const Classes = () => {
       </a>
       <Accordion type="multiple" className="container">
         {raport
-          ? raport.map((list, index) => {
-              return list && list?.length > 0 ? (
-                <AccordionItem value={`title-${index}`} key={`title-${index}`}>
-                  <AccordionTrigger>
-                    <ul className="text-xl w-full">
-                      <li className="flex justify-between" key={index}>
-                        {list?.map((e) => (
-                          <span key={e.title}>{e.title}</span>
-                        ))}
-                      </li>
-                    </ul>
-                  </AccordionTrigger>
-                  <AccordionContent className="overflow-x-scroll">
-                    {list.map((e) => (
-                      <ClassesGroup schoolList={e} key={e.title} />
-                    ))}
-                  </AccordionContent>
-                </AccordionItem>
-              ) : null;
-            })
+          ? raport.map((list, index) => (
+              <AccordionItem value={`title-${index}`} key={`title-${index}`}>
+                <AccordionTrigger>
+                  <ul className="text-xl w-full">
+                    <li className="flex justify-between" key={index}>
+                      <span key={list.title}>{list.title}</span>
+                    </li>
+                  </ul>
+                </AccordionTrigger>
+                <AccordionContent className="overflow-x-scroll">
+                  <ClassesGroup schoolList={list} key={list.title} />
+                </AccordionContent>
+              </AccordionItem>
+            ))
           : null}
       </Accordion>
     </div>

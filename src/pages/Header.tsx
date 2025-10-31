@@ -7,11 +7,6 @@ const Header = () => {
       <ul className="flex bg-slate-800">
         <li>
           <Button variant="link" className="text-white">
-            <Link to="/recrutation">Rekrutacja</Link>
-          </Button>
-        </li>
-        <li>
-          <Button variant="link" className="text-white">
             <Link to="/classes">Spotkania</Link>
           </Button>
         </li>
