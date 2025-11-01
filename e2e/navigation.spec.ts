@@ -97,8 +97,6 @@ test.describe("Navigation and Redirects", () => {
     // If there are any form inputs or toggles, interact with them
     const dateToggle = page.locator('input[type="checkbox"]').first();
     if (await dateToggle.isVisible()) {
-      const initialChecked = await dateToggle.isChecked();
-
       // Navigate away and back
       await page.goto("/");
       await page.goto("/classes");

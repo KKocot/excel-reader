@@ -1,5 +1,4 @@
 import { test, expect } from "@playwright/test";
-import path from "path";
 
 test.describe("Classes Page", () => {
   test("should load the classes page successfully", async ({ page }) => {
