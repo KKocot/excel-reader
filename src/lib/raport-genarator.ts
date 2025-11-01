@@ -1,8 +1,9 @@
 import { getWeek } from "date-fns";
 
+export type StatusColor = "red" | "green" | "yellow";
 export interface Item {
   pair: string;
-  classes: number[];
+  classes: { week: number; status: ClassStatus; status_color: StatusColor }[];
   connected: number;
 }
 
@@ -27,7 +28,36 @@ function getTitles(list: ClassesGroupProps[]) {
   // School name is in the first element of the list
   return list[0].Textbox5.split("\r")[0].replace(" / Szkoła Podstawowa", "");
 }
+export type ClassStatus =
+  | "spotkanie_do_akceptacji"
+  | "spotkanie_zaakceptowane"
+  | "odwolal_wolontariusz"
+  | "wydarzenie_do_akceptacji"
+  | "odwolalo_dziecko"
+  | "wydarzenie_zaakceptowane"
+  | "brak_zajec"
+  | "odrabianie_zajec_zaakceptowane"
+  | "odrabianie_zajec_do_akceptacji"
+  | null;
 
+const getColorStatus = (status: ClassStatus) => {
+  switch (status) {
+    case "spotkanie_do_akceptacji":
+    case "spotkanie_zaakceptowane":
+    case "wydarzenie_do_akceptacji":
+    case "wydarzenie_zaakceptowane":
+    case "odrabianie_zajec_zaakceptowane":
+    case "odrabianie_zajec_do_akceptacji":
+      return "green";
+    case "odwolal_wolontariusz":
+    case "odwolalo_dziecko":
+      return "yellow";
+    case "brak_zajec":
+      return "red";
+    default:
+      return "red";
+  }
+};
 function getList(list: ClassesGroupProps[]) {
   const clearList = list
     // Move all data to from __parsed_extra to main object
@@ -45,14 +75,24 @@ function getList(list: ClassesGroupProps[]) {
       const existingPair = acc.find((item) => item.pair === curr.pair);
 
       if (existingPair) {
-        if (!existingPair.classes.includes(weekNumber)) {
-          existingPair.classes.push(weekNumber);
+        if (!existingPair.classes.some((c) => c.week === weekNumber)) {
+          existingPair.classes.push({
+            week: weekNumber,
+            status: curr.class,
+            status_color: getColorStatus(curr.class),
+          });
         }
       } else {
         acc.push({
           pair: curr.pair,
           connected: Number(getWeek(curr.pair.split(" ").pop())),
-          classes: [weekNumber],
+          classes: [
+            {
+              week: weekNumber,
+              status: curr.class,
+              status_color: getColorStatus(curr.class),
+            },
+          ],
         });
       }
       return acc;
@@ -63,7 +103,10 @@ function getList(list: ClassesGroupProps[]) {
       // Get all weeks for the pair
       fullWeeks: getWeeksArray(item).map((week) => ({
         week,
-        check: item.classes.includes(week),
+        check: item.classes.some((c) => c.week === week),
+        status: item.classes.find((c) => c.week === week)?.status || null,
+        status_color:
+          item.classes.find((c) => c.week === week)?.status_color || "red",
       })),
       connected: item.connected,
     }));
