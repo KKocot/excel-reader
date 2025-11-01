@@ -2,6 +2,7 @@ import { FC } from "react";
 import * as XLSX from "xlsx-js-style";
 import { Button } from "./ui/button";
 import { createDate } from "@/lib/utils";
+import { Download } from "lucide-react";
 
 interface Raport {
   title: string;
@@ -62,11 +63,11 @@ const DownloadClassesRaport: FC<{ raport: Raport[] }> = ({ raport }) => {
 
   return (
     <Button
-      className="absolute top-10 right-2"
+      className="sticky bottom-2 right-2 self-end"
       variant="secondary"
       onClick={handleDownloadExcel}
     >
-      Pobierz raport Kart Sukcesow
+      Pobierz raport Kart Sukcesow <Download className="ml-2 h-4 w-4" />
     </Button>
   );
 };

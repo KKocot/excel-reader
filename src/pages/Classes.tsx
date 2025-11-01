@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import DownloadClassesRaport from "@/components/download-classes-raport";
 import { Check } from "lucide-react";
 import { Card } from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
 
 interface ParsedResult {
   data: any[];
@@ -51,95 +52,102 @@ const Classes = () => {
 
   return (
     <div className="p-4 flex flex-col items-center gap-8 ">
-      {raport ? <DownloadClassesRaport raport={raport} /> : null}
       <h1 className="text-4xl font-bold">Zajecia</h1>
-      <h2 className="text-xl font-bold">Obecny tydzien {today}</h2>
-      <Input
-        type="file"
-        accept=".csv"
-        onChange={handleFileUpload}
-        className="w-1/2"
-        multiple
-      />
-      <a href="https://www.epochconverter.com/pl/tygodni/2025" target="_blank">
-        <Button>Kalendarz tygodni</Button>
-      </a>
-      <Card className="p-4 bg-card border-border shadow-sm hover:shadow-md transition-shadow duration-300">
-        <h2 className="text-center text-xl m-4 font-bold">
-          Filtruj według statusu
-        </h2>
-        <div className="flex flex-wrap gap-3">
-          <Button
-            onClick={() => setSort((prev) => ({ ...prev, green: !prev.green }))}
-            variant={sort.green ? "default" : "outline"}
-            className={`relative ${
-              sort.green
-                ? "bg-green-600 hover:bg-green-700 text-white"
-                : "border-green-600 text-green-600 hover:bg-green-50 dark:hover:bg-green-950"
-            }`}
-          >
-            Zielony
-            {sort.green ? (
-              <Check className="mr-2 h-4 w-4" />
-            ) : (
-              <div className="mr-2 h-4 w-4" />
-            )}
-          </Button>
-          <Button
-            onClick={() =>
-              setSort((prev) => ({ ...prev, yellow: !prev.yellow }))
-            }
-            variant={sort.yellow ? "default" : "outline"}
-            className={`relative ${
-              sort.yellow
-                ? "bg-yellow-600 hover:bg-yellow-700 text-white"
-                : "border-yellow-600 text-yellow-600 hover:bg-yellow-50 dark:hover:bg-yellow-950"
-            }`}
-          >
-            Żółty
-            {sort.yellow ? (
-              <Check className="mr-2 h-4 w-4" />
-            ) : (
-              <div className="mr-2 h-4 w-4" />
-            )}
-          </Button>
-          <Button
-            onClick={() => setSort((prev) => ({ ...prev, red: !prev.red }))}
-            variant={sort.red ? "default" : "outline"}
-            className={`relative ${
-              sort.red
-                ? "bg-red-600 hover:bg-red-700 text-white"
-                : "border-red-600 text-red-600 hover:bg-red-50 dark:hover:bg-red-950"
-            }`}
-          >
-            Czerwony
-            {sort.red ? (
-              <Check className="mr-2 h-4 w-4" />
-            ) : (
-              <div className="mr-2 h-4 w-4" />
-            )}
-          </Button>
+      <div className="justify-center w-full items-center gap-8 grid-cols-2 grid">
+        <div className="col-span-1 items-center flex flex-col gap-4">
+          <h2 className="text-xl font-bold">Obecny tydzien {today}</h2>
+          <div className="w-1/2 text-center">
+            <Input
+              type="file"
+              accept=".csv"
+              onChange={handleFileUpload}
+              multiple
+              id="file-upload"
+            />
+            <Label className="text-center" htmlFor="file-upload">
+              Wybierz pliki CSV wyeksportowane
+            </Label>
+          </div>
         </div>
-        <div className="mt-4">
-          <h2 className="text-center text-xl m-4 font-bold">Inne opcje</h2>
-          <Button
-            onClick={() => setShowDates(!showDates)}
-            variant={showDates ? "default" : "outline"}
-            className={`relative ${
-              showDates
-                ? "bg-slate-600 hover:bg-slate-700 text-white"
-                : "border-slate-600 text-slate-600 hover:bg-red-50 dark:hover:bg-red-950"
-            }`}
-          >
-            Pokaz daty
-            {sort.red ? (
-              <Check className="mr-2 h-4 w-4" />
-            ) : (
-              <div className="mr-2 h-4 w-4" />
-            )}
-          </Button>
-        </div>
-      </Card>
+        <Card className="p-4 bg-card border-border shadow-sm hover:shadow-md transition-shadow duration-300 col-span-1 items-center flex flex-col gap-4">
+          <h2 className="text-center text-xl m-4 font-bold">
+            Filtruj według statusu
+          </h2>
+          <div className="flex flex-wrap gap-3">
+            <Button
+              onClick={() =>
+                setSort((prev) => ({ ...prev, green: !prev.green }))
+              }
+              variant={sort.green ? "default" : "outline"}
+              className={`relative ${
+                sort.green
+                  ? "bg-green-600 hover:bg-green-700 text-white"
+                  : "border-green-600 text-green-600 hover:bg-green-50 dark:hover:bg-green-950"
+              }`}
+            >
+              Zielony
+              {sort.green ? (
+                <Check className="mr-2 h-4 w-4" />
+              ) : (
+                <div className="mr-2 h-4 w-4" />
+              )}
+            </Button>
+            <Button
+              onClick={() =>
+                setSort((prev) => ({ ...prev, yellow: !prev.yellow }))
+              }
+              variant={sort.yellow ? "default" : "outline"}
+              className={`relative ${
+                sort.yellow
+                  ? "bg-yellow-600 hover:bg-yellow-700 text-white"
+                  : "border-yellow-600 text-yellow-600 hover:bg-yellow-50 dark:hover:bg-yellow-950"
+              }`}
+            >
+              Żółty
+              {sort.yellow ? (
+                <Check className="mr-2 h-4 w-4" />
+              ) : (
+                <div className="mr-2 h-4 w-4" />
+              )}
+            </Button>
+            <Button
+              onClick={() => setSort((prev) => ({ ...prev, red: !prev.red }))}
+              variant={sort.red ? "default" : "outline"}
+              className={`relative ${
+                sort.red
+                  ? "bg-red-600 hover:bg-red-700 text-white"
+                  : "border-red-600 text-red-600 hover:bg-red-50 dark:hover:bg-red-950"
+              }`}
+            >
+              Czerwony
+              {sort.red ? (
+                <Check className="mr-2 h-4 w-4" />
+              ) : (
+                <div className="mr-2 h-4 w-4" />
+              )}
+            </Button>
+          </div>
+          <div className="mt-4">
+            <h2 className="text-center text-xl m-4 font-bold">Inne opcje</h2>
+            <Button
+              onClick={() => setShowDates(!showDates)}
+              variant={showDates ? "default" : "outline"}
+              className={`relative ${
+                showDates
+                  ? "bg-slate-600 hover:bg-slate-700 text-white"
+                  : "border-slate-600 text-slate-600 hover:bg-red-50 dark:hover:bg-red-950"
+              }`}
+            >
+              Pokaz daty
+              {sort.red ? (
+                <Check className="mr-2 h-4 w-4" />
+              ) : (
+                <div className="mr-2 h-4 w-4" />
+              )}
+            </Button>
+          </div>
+        </Card>
+      </div>
       <Accordion type="multiple" className="container">
         {raport
           ? raport.map((list, index) => (
@@ -163,6 +171,9 @@ const Classes = () => {
             ))
           : null}
       </Accordion>
+      {!!raport && raport.length > 0 ? (
+        <DownloadClassesRaport raport={raport} />
+      ) : null}
     </div>
   );
 };
