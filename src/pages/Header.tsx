@@ -16,11 +16,6 @@ const Header = () => {
               <Link to="/classes">Spotkania</Link>
             </Button>
           </li>
-          <li>
-            <Button variant="link" className="text-white">
-              <Link to="/full-document">Caly dokument</Link>
-            </Button>
-          </li>
         </ul>
         <ul className="flex">
           <li>
