@@ -1,50 +1,67 @@
-# React + TypeScript + Vite
+# Excel Reader
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A web application for reading, analyzing, and generating reports from CSV files, built with React, TypeScript, and Tailwind CSS.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Upload and preview CSV files
+- Group and display class data
+- Generate downloadable reports
+- Error handling and user-friendly UI
 
-## Expanding the ESLint configuration
+## Project Structure
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- `src/` – Main source code
+  - `components/` – UI and feature components
+  - `lib/` – Utility and report generation logic
+  - `pages/` – App pages (Home, Classes, etc.)
+- `public/sample/` – Example CSV files for testing
 
-- Configure the top-level `parserOptions` property like this:
+## Getting Started
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+### Prerequisites
+
+- Node.js (v18+ recommended)
+- npm or yarn
+
+### Installation
+
+```bash
+npm install
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+### Running the App
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+```bash
+npm run dev
 ```
+
+Open [http://localhost:5173](http://localhost:5173) in your browser.
+
+### Building for Production
+
+```bash
+npm run build
+```
+
+## Usage
+
+1. Upload a CSV file from the sample files or your own.
+2. View and interact with the parsed data.
+3. Download generated reports as needed.
+
+## Technologies Used
+
+- React
+- TypeScript
+- Vite
+- Tailwind CSS
+
+## Folder Overview
+
+- `components.json`, `tailwind.config.js`, `vite.config.ts` – Configuration files
+- `public/sample/` – Sample CSVs for demo/testing
+
+## License
+
+MIT
