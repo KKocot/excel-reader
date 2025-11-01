@@ -6,18 +6,12 @@ import ClassesGroup from "@/components/classes-group";
 import { Accordion, AccordionContent } from "@/components/ui/accordion";
 import { getSchool } from "@/lib/utils";
 import { AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { raportGenarator } from "@/lib/raport-genarator";
+import { raportGenarator, ClassesGroupProps } from "@/lib/raport-genarator";
 import { Button } from "@/components/ui/button";
 import DownloadClassesRaport from "@/components/download-classes-raport";
 import { Check } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
-
-interface ParsedResult {
-  data: any[];
-  errors: any[];
-  meta: any;
-}
 
 export interface Sort {
   red: boolean;
@@ -26,7 +20,7 @@ export interface Sort {
 }
 
 const Classes = () => {
-  const [jsonResult, setJsonResult] = useState<any[]>([]);
+  const [jsonResult, setJsonResult] = useState<ClassesGroupProps[][]>([]);
   const [showDates, setShowDates] = useState<boolean>(false);
   const [sort, setSort] = useState<Sort>({
     red: true,
@@ -38,7 +32,7 @@ const Classes = () => {
     const file = event.target.files ? event.target.files : null;
     if (file) {
       Array.from(file).forEach((f) => {
-        Papa.parse<ParsedResult>(f, {
+        Papa.parse<ClassesGroupProps>(f, {
           header: true,
           skipEmptyLines: true,
           complete: (result) => {

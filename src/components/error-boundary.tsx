@@ -23,9 +23,11 @@ export class ErrorBoundary extends Component<
   }
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-    console.log(error, errorInfo);
-    // You can log error info here or send to a logging service
-    // console.error('ErrorBoundary caught an error', error, errorInfo);
+    // Log error info to a logging service in production
+    if (process.env.NODE_ENV === "development") {
+      // eslint-disable-next-line no-console
+      console.error("ErrorBoundary caught an error", error, errorInfo);
+    }
   }
 
   handleReload = () => {

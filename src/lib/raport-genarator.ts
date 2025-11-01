@@ -9,7 +9,7 @@ export interface Item {
 
 export interface ClassesGroupProps {
   Textbox5: string;
-  __parsed_extra: any[];
+  __parsed_extra: unknown[];
 }
 
 export function raportGenarator(jsonResult: ClassesGroupProps[][] | null) {
@@ -19,7 +19,7 @@ export function raportGenarator(jsonResult: ClassesGroupProps[][] | null) {
     const title = getTitles(list);
     // First two elements are: School name and line with headers, so we skip them
     const cleanList = list.length > 2 ? getList(list.slice(2)) : [];
-    return { title: title, list: cleanList };
+    return { title, list: cleanList };
   });
   return sortedList;
 }
@@ -63,15 +63,24 @@ function getList(list: ClassesGroupProps[]) {
     // Move all data to from __parsed_extra to main object
     .map((e) => ({
       week: e.Textbox5,
-      date: e.__parsed_extra?.[0] || null,
-      pair: e.__parsed_extra?.[1] || null,
-      class: e.__parsed_extra?.[2] || null,
+      date: (e.__parsed_extra?.[0] as string) || null,
+      pair: (e.__parsed_extra?.[1] as string) || null,
+      class: (e.__parsed_extra?.[2] as ClassStatus) || null,
     }))
     // Filter out all empty elements
-    .filter((e) => e.class)
+    .filter(
+      (
+        e
+      ): e is {
+        week: string;
+        date: string | null;
+        pair: string;
+        class: ClassStatus;
+      } => !!e.class && !!e.pair
+    )
     // Connect pairs with classes weeks
     .reduce((acc: Item[], curr) => {
-      const weekNumber = getWeek(curr.date);
+      const weekNumber = getWeek(curr.date || new Date());
       const existingPair = acc.find((item) => item.pair === curr.pair);
 
       if (existingPair) {
@@ -83,9 +92,10 @@ function getList(list: ClassesGroupProps[]) {
           });
         }
       } else {
+        const lastPart = curr.pair.split(" ").pop();
         acc.push({
           pair: curr.pair,
-          connected: Number(getWeek(curr.pair.split(" ").pop())),
+          connected: Number(getWeek(lastPart || new Date())),
           classes: [
             {
               week: weekNumber,

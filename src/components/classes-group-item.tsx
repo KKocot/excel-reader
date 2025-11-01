@@ -20,7 +20,7 @@ const ClassesGroupItem = ({
       )} hover:scale-105 hover:shadow-md transition-all duration-200 cursor-default`}
     >
       <span className="font-bold text-wrap text-center">
-        {!!week.status ? week.status.replace(/_/g, " ") : "Brak"}
+        {week.status ? week.status.replace(/_/g, " ") : "Brak"}
       </span>
       {showDates ? (
         <>
