@@ -21,7 +21,7 @@ services:
     # Traefik labels - konfiguracja reverse proxy
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.excel-reader.rule=Host(`excel-reader.example.com`)"
+      - "traefik.http.routers.excel-reader.rule=Host(`excel-reader.bard-dev.com`)"
       - "traefik.http.routers.excel-reader.tls=true"
       - "traefik.http.routers.excel-reader.entrypoints=websecure"
       - "traefik.http.services.excel-reader.loadbalancer.server.port=3000"
