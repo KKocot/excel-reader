@@ -1,0 +1,36 @@
+# Docker Compose configuration dla excel-reader
+# Nowa nazwa pliku: compose.yml (zamiast docker-compose.yml)
+
+services:
+  excel-reader:
+    # Build z lokalnego Dockerfile
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    # Nazwa kontenera
+    container_name: excel-reader
+
+    # Automatyczny restart kontenera
+    restart: always
+
+    # Expose port 3000 (serve)
+    expose:
+      - "3000"
+
+    # Traefik labels - konfiguracja reverse proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.excel-reader.rule=Host(`excel-reader.example.com`)"
+      - "traefik.http.routers.excel-reader.tls=true"
+      - "traefik.http.routers.excel-reader.entrypoints=websecure"
+      - "traefik.http.services.excel-reader.loadbalancer.server.port=3000"
+
+    # Network zewnętrzny dla Traefik
+    networks:
+      - common_proxy_network
+
+# Definicja sieci - external network zarządzany przez Traefik
+networks:
+  common_proxy_network:
+    external: true

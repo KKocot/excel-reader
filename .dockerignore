@@ -1,0 +1,50 @@
+# Pliki i foldery ignorowane podczas budowania obrazu Docker
+# Zmniejsza rozmiar kontekstu buildu i przyspiesza proces
+
+# Dependencies - nie kopiujemy node_modules (będzie npm ci w Dockerfile)
+node_modules
+
+# Build output - dist będzie wygenerowany w procesie buildu
+dist
+
+# Git
+.git
+.gitignore
+.github
+
+# Documentation
+*.md
+README.md
+SETUP_SUMMARY.md
+PLAYWRIGHT_SETUP_SUMMARY.md
+
+# Tests
+e2e
+playwright-report
+test-results
+playwright.config.ts
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# Environment files (jeśli będą)
+.env
+.env.local
+.env.*.local
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Misc
+coverage
+.cache
