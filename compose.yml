@@ -12,7 +12,7 @@ services:
     container_name: excel-reader
 
     # Automatyczny restart kontenera
-    restart: always
+    restart: unless-stopped
 
     # Expose port 3000 (serve)
     expose:

@@ -8,6 +8,10 @@ COPY package*.json ./
 RUN npm ci --quiet
 
 COPY . .
+
+# Run CI checks before build
+RUN npm run lint && npm run type-check
+
 RUN npm run build
 
 # Stage 2: Production - serwowanie plików statycznych
