@@ -14,10 +14,8 @@ test.describe("UI Components and Button Interactions", () => {
     await expect(classesButton).toBeVisible();
     await expect(classesButton).toHaveText("Spotkania");
 
-    // Test calendar button
-    const calendarButton = page.locator('a[href*="epochconverter"]');
-    await expect(calendarButton).toBeVisible();
-    await expect(calendarButton).toHaveText("Kalendarz tygodni");
+    // Calendar link is now icon-only in ClassesFilters, not in header
+    // Skipping calendar button test from home page
   });
 
   test("should handle button hover states", async ({ page }) => {

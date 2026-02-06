@@ -72,7 +72,7 @@ test.describe("Navigation and Redirects", () => {
       // Check that header navigation is present
       await expect(page.locator('a[href="/"]')).toBeVisible();
       await expect(page.locator('a[href="/classes"]')).toBeVisible();
-      await expect(page.locator('a[href*="epochconverter"]')).toBeVisible();
+      await expect(page.locator('a[href="/classes/calendar"]')).toBeVisible();
     }
   });
 
@@ -86,9 +86,8 @@ test.describe("Navigation and Redirects", () => {
     await expect(githubLink).toHaveAttribute("target", "_blank");
     await expect(githubLink).toHaveAttribute("rel", "noopener noreferrer");
 
-    // Test calendar external link from header
-    const calendarLink = page.locator('a[href*="epochconverter"]');
-    await expect(calendarLink).toHaveAttribute("target", "_blank");
+    // Calendar link is now only in ClassesFilters (icon, not in Header)
+    // No need to test it from home page
   });
 
   test("should preserve page state during navigation", async ({ page }) => {

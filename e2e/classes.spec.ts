@@ -21,11 +21,11 @@ test.describe("Classes Page", () => {
     // Check that header navigation is present
     const homeButton = page.locator('a[href="/"]');
     const classesButton = page.locator('a[href="/classes"]');
-    const calendarButton = page.locator('a[href*="epochconverter"]');
+    const calendarIcon = page.locator('a[href="/classes/calendar"]');
 
     await expect(homeButton).toBeVisible();
     await expect(classesButton).toBeVisible();
-    await expect(calendarButton).toBeVisible();
+    await expect(calendarIcon).toBeVisible();
 
     // Test home navigation
     await homeButton.click();
@@ -35,8 +35,9 @@ test.describe("Classes Page", () => {
     // Navigate back to classes
     await page.goto("/classes");
 
-    // Test external calendar link
-    await expect(calendarButton).toHaveAttribute("target", "_blank");
+    // Test calendar icon link (internal, not in header but in filters)
+    await calendarIcon.click();
+    await expect(page).toHaveURL("/classes/calendar");
   });
 
   test("should handle file upload interaction", async ({ page }) => {
