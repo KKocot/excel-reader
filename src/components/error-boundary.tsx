@@ -37,15 +37,15 @@ export class ErrorBoundary extends Component<
   render() {
     if (this.state.hasError) {
       return (
-        <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-          <h1 className="text-3xl font-bold mb-4 text-red-600">
+        <div className="flex flex-col items-center justify-center min-h-screen bg-background">
+          <h1 className="text-3xl font-bold mb-4 text-destructive">
             Coś poszło nie tak
           </h1>
-          <p className="mb-4">
+          <p className="mb-4 text-foreground">
             Wystąpił nieoczekiwany błąd. Spróbuj odświeżyć stronę.
           </p>
           <button
-            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+            className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors"
             onClick={this.handleReload}
           >
             Odśwież stronę

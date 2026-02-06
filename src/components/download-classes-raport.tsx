@@ -3,20 +3,9 @@ import * as XLSX from "xlsx-js-style";
 import { Button } from "./ui/button";
 import { createDate } from "@/lib/utils";
 import { Download } from "lucide-react";
+import { ListProps } from "@/types";
 
-interface Raport {
-  title: string;
-  list: {
-    pair: string;
-    fullWeeks: {
-      week: number;
-      check: boolean;
-    }[];
-    connected: number;
-  }[];
-}
-
-const DownloadClassesRaport: FC<{ raport: Raport[] }> = ({ raport }) => {
+const DownloadClassesRaport: FC<{ raport: ListProps[] }> = ({ raport }) => {
   const handleDownloadExcel = () => {
     const workbook = XLSX.utils.book_new();
     const rows = raport.flatMap((el) => {
@@ -67,7 +56,7 @@ const DownloadClassesRaport: FC<{ raport: Raport[] }> = ({ raport }) => {
       variant="secondary"
       onClick={handleDownloadExcel}
     >
-      Pobierz raport Kart Sukcesow <Download className="ml-2 h-4 w-4" />
+      Pobierz raport Kart Sukcesów <Download className="ml-2 h-4 w-4" />
     </Button>
   );
 };
