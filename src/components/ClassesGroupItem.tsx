@@ -1,4 +1,4 @@
-import { createDate } from "@/lib/utils";
+import { createDate, get_status_color_classes } from "@/lib/utils";
 import { WeekItem } from "@/types";
 import { Badge } from "./ui/badge";
 
@@ -15,7 +15,7 @@ const ClassesGroupItem = ({
     <Badge
       key={week.week}
       variant="outline"
-      className={`text-xs w-28 flex flex-col whitespace-nowrap ${getStatusColor(
+      className={`text-xs w-28 flex flex-col whitespace-nowrap ${get_status_color_classes(
         week.status_color
       )} hover:scale-105 hover:shadow-md transition-all duration-200 cursor-default`}
     >
@@ -33,16 +33,3 @@ const ClassesGroupItem = ({
   );
 };
 export default ClassesGroupItem;
-
-function getStatusColor(color: string) {
-  switch (color) {
-    case "green":
-      return "bg-emerald-500/10 text-emerald-600 border-emerald-500/20 dark:bg-emerald-500/20 dark:text-emerald-400 dark:border-emerald-500/30";
-    case "yellow":
-      return "bg-amber-500/10 text-amber-600 border-amber-500/20 dark:bg-amber-500/20 dark:text-amber-400 dark:border-amber-500/30";
-    case "red":
-      return "bg-rose-500/10 text-rose-600 border-rose-500/20 dark:bg-rose-500/20 dark:text-rose-400 dark:border-rose-500/30";
-    default:
-      return "bg-muted text-muted-foreground";
-  }
-}

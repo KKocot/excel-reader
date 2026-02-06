@@ -1,5 +1,5 @@
 import { ListProps, Sort } from "@/types";
-import ClassesGroupPairs from "./classes-group-pairs";
+import ClassesGroupPairs from "./ClassesGroupPairs";
 import { Badge } from "./ui/badge";
 
 const ClassesGroup = ({

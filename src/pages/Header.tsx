@@ -1,10 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { Outlet, Link } from "react-router-dom";
 import { Moon, Sun } from "lucide-react";
-import { use_dark_mode } from "@/hooks/use_dark_mode";
+import { useDarkMode } from "@/hooks/use_dark_mode";
 
 const Header = () => {
-  const { is_dark, toggle } = use_dark_mode();
+  const { is_dark, toggle } = useDarkMode();
 
   return (
     <>

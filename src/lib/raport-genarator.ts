@@ -1,5 +1,6 @@
 import { getWeek } from "date-fns";
 import { ClassesGroupProps, ClassStatus, Item } from "@/types";
+import { is_string, is_class_status, get_status_color } from "@/lib/utils";
 
 /**
  * Main report generator function
@@ -76,55 +77,6 @@ function getTitles(list: ClassesGroupProps[]) {
   return list[0].Textbox5.split("\r")[0].replace(" / Szkoła Podstawowa", "");
 }
 
-/**
- * Maps ClassStatus to color for UI display
- * green: accepted/scheduled meetings
- * yellow: cancelled by volunteer/student
- * red: no classes or unknown status
- */
-/**
- * Type guard to check if value is a string
- */
-function is_string(value: unknown): value is string {
-  return typeof value === "string";
-}
-
-/**
- * Type guard to check if value is a valid ClassStatus
- */
-function is_class_status(value: unknown): value is ClassStatus {
-  const valid_statuses: ClassStatus[] = [
-    "spotkanie_do_akceptacji",
-    "spotkanie_zaakceptowane",
-    "odwolal_wolontariusz",
-    "odwolalo_dziecko",
-    "brak_zajec",
-    "wydarzenie_do_akceptacji",
-    "wydarzenie_zaakceptowane",
-    "odrabianie_zajec_zaakceptowane",
-    "odrabianie_zajec_do_akceptacji",
-  ];
-  return typeof value === "string" && valid_statuses.includes(value as ClassStatus);
-}
-
-const getColorStatus = (status: ClassStatus) => {
-  switch (status) {
-    case "spotkanie_do_akceptacji":
-    case "spotkanie_zaakceptowane":
-    case "wydarzenie_do_akceptacji":
-    case "wydarzenie_zaakceptowane":
-    case "odrabianie_zajec_zaakceptowane":
-    case "odrabianie_zajec_do_akceptacji":
-      return "green";
-    case "odwolal_wolontariusz":
-    case "odwolalo_dziecko":
-      return "yellow";
-    case "brak_zajec":
-      return "red";
-    default:
-      return "red";
-  }
-};
 function getList(list: ClassesGroupProps[]) {
   const clearList = list
     // Move all data to from __parsed_extra to main object
@@ -161,7 +113,7 @@ function getList(list: ClassesGroupProps[]) {
           existingPair.classes.push({
             week: weekNumber,
             status: curr.class,
-            status_color: getColorStatus(curr.class),
+            status_color: get_status_color(curr.class),
           });
         }
       } else {
@@ -173,7 +125,7 @@ function getList(list: ClassesGroupProps[]) {
             {
               week: weekNumber,
               status: curr.class,
-              status_color: getColorStatus(curr.class),
+              status_color: get_status_color(curr.class),
             },
           ],
         });

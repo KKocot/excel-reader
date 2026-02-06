@@ -4,7 +4,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import ClassesGroup from "@/components/classes-group";
+import ClassesGroup from "@/components/ClassesGroup";
 import { ListProps, Sort } from "@/types";
 
 interface ClassesListProps {

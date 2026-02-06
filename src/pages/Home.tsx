@@ -8,6 +8,8 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
+const REPO_URL = "https://github.com/KKocot/excel-reader";
+
 /**
  * Home page component
  * Displays app description, sample file downloads and file upload functionality
@@ -60,8 +62,9 @@ const Home = () => {
       const file = new File([blob], "demo.csv", { type: "text/csv" });
       navigate("/classes", { state: { uploaded_files: [file] } });
     } catch (error) {
-      console.error("Error loading demo file:", error);
-      alert("Nie udało się załadować pliku demonstracyjnego.");
+      alert(
+        `Nie udało się załadować pliku demonstracyjnego: ${error instanceof Error ? error.message : "Nieznany błąd"}`
+      );
     }
   };
 
@@ -93,7 +96,7 @@ const Home = () => {
             Projekt jest open-source co zapewnia pełną przejrzystość i dostępny
             jest na GitHub pod linkiem{" "}
             <a
-              href="https://github.com/KKocot/excel-reader"
+              href={REPO_URL}
               target="_blank"
               rel="noopener noreferrer"
               className="underline text-primary hover:text-primary/80"
@@ -154,6 +157,7 @@ const Home = () => {
                 multiple
                 onChange={handle_file_upload}
                 className="hidden"
+                aria-label="Upload CSV or Excel files"
               />
             </CardContent>
           </Card>

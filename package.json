@@ -3,6 +3,10 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/KKocot/excel-reader"
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
@@ -20,7 +24,8 @@
     "test:e2e:debug": "playwright test --debug",
     "ci": "npm run type-check && npm run build",
     "ci:strict": "npm run lint && npm run type-check && npm run build",
-    "ci:full": "npm run lint && npm run type-check && npm run build && npm run test && npm run test:e2e"
+    "ci:full": "npm run lint && npm run type-check && npm run build && npm run test && npm run test:e2e",
+    "prepare": "husky"
   },
   "dependencies": {
     "@radix-ui/react-accordion": "^1.2.12",
@@ -58,6 +63,7 @@
     "eslint-plugin-react-hooks": "^5.1.0",
     "eslint-plugin-react-refresh": "^0.4.16",
     "globals": "^15.14.0",
+    "husky": "^9.1.7",
     "jsdom": "^28.0.0",
     "tailwindcss": "^4.0.0",
     "typescript": "~5.9.2",

@@ -1,112 +1,59 @@
 # Excel Reader
 
-[![CI/CD Pipeline](https://github.com/KKocot/excel-reader/actions/workflows/ci.yml/badge.svg)](https://github.com/KKocot/excel-reader/actions/workflows/ci.yml)
-
-A web application for reading, analyzing, and generating reports from CSV files, built with React, TypeScript, and Tailwind CSS.
+A web application for analyzing CSV files exported from SuperW system (Kwap1/Wiosny). The tool processes class meeting data, analyzes Success Card statuses, and generates styled Excel reports.
 
 ## Features
 
-- Upload and preview CSV files
-- Group and display class data
-- Generate downloadable reports
-- Error handling and user-friendly UI
+- CSV file upload and parsing (PapaParse)
+- Meeting status color coding (green/yellow/red)
+- Week-based filtering with calendar picker
+- Grouped display by school (Radix UI accordion)
+- Excel export with styled cells (xlsx-js-style)
+- Offline-capable (runs in browser)
 
-## Project Structure
+## Tech Stack
 
-- `src/` – Main source code
-  - `components/` – UI and feature components
-  - `lib/` – Utility and report generation logic
-  - `pages/` – App pages (Home, Classes, etc.)
-- `public/sample/` – Example CSV files for testing
+- React 19, Vite 7.3, TypeScript 5.9
+- Tailwind CSS 4 (OKLCH color space)
+- Radix UI (accordion, label, slot, icons)
+- react-router-dom 7.6
+- PapaParse (CSV parsing)
+- xlsx-js-style (Excel export)
+- date-fns 4.1 (week calculations)
+- Vitest 4.0 + Playwright 1.58 (testing)
 
-## Getting Started
-
-### Prerequisites
-
-- Node.js (v18+ recommended)
-- npm or yarn
-
-### Installation
+## Installation
 
 ```bash
 npm install
 ```
 
-### Running the App
-
-```bash
-npm run dev
-```
-
-Open [http://localhost:5173](http://localhost:5173) in your browser.
-
-### Building for Production
-
-```bash
-npm run build
-```
-
-### Development Scripts
-
-```bash
-# Run development server
-npm run dev
-
-# Build for production
-npm run build
-
-# Run ESLint
-npm run lint
-
-# Fix ESLint issues automatically
-npm run lint:fix
-
-# Run TypeScript type checking
-npm run type-check
-
-# Run full CI pipeline (lint + type-check + build)
-npm run ci
-
-# Preview production build
-npm run preview
-```
-
-## CI/CD Pipeline
-
-This project uses GitHub Actions for automated testing and deployment:
-
-- **Continuous Integration**: Runs on every push and pull request
-  - Tests with Node.js 18.x and 20.x
-  - ESLint code quality checks
-  - TypeScript type checking
-  - Production build validation
-- **Continuous Deployment**: Deploys to Vercel on main branch pushes
-
-### Setting up Deployment
-
-To enable Vercel deployment, add these secrets to your GitHub repository:
-
-- `VERCEL_TOKEN` - Your Vercel deployment token
-- `ORG_ID` - Your Vercel organization ID
-- `PROJECT_ID` - Your Vercel project ID
-
 ## Usage
 
-1. Upload a CSV file from the sample files or your own.
-2. View and interact with the parsed data.
-3. Download generated reports as needed.
+```bash
+npm run dev          # Start dev server (localhost:5173)
+npm run build        # Build for production
+npm run preview      # Preview production build
+npm run lint         # Run ESLint
+npm run type-check   # TypeScript type checking
+npm run test         # Run unit tests (Vitest)
+npm run test:e2e     # Run E2E tests (Playwright)
+```
 
-## Technologies Used
+## How it works
 
-- React
-- TypeScript
-- Vite
-- Tailwind CSS
+1. Upload CSV files from Home page or directly on /classes page
+2. PapaParse parses CSV into ClassesGroupProps arrays
+3. raport-genarator transforms data (groups by school, pairs students with weekly status)
+4. Color status calculated based on meeting status (green/yellow/red)
+5. Export to styled Excel via xlsx-js-style
 
-## Folder Overview
+## Project structure
 
-- `components.json`, `tailwind.config.js`, `vite.config.ts` – Configuration files
-- `public/sample/` – Sample CSVs for demo/testing
+- `src/lib/raport-genarator.ts` - Core business logic
+- `src/hooks/use_classes_filter.ts` - Filtering state
+- `src/components/classes/` - Main components
+- `public/sample/` - Example CSV files
 
 ## License
 

@@ -4,7 +4,10 @@ import { useEffect, useState } from "react";
  * Custom hook for managing dark mode state
  * Persists preference in localStorage and applies 'dark' class to html element
  */
-export const use_dark_mode = () => {
+export const useDarkMode = (): {
+  is_dark: boolean;
+  toggle: () => void;
+} => {
   const [is_dark, set_is_dark] = useState<boolean>(() => {
     const stored = localStorage.getItem("theme");
     if (stored) {
@@ -14,6 +17,7 @@ export const use_dark_mode = () => {
   });
 
   useEffect(() => {
+    // No cleanup needed - theme is global app state
     const html = document.documentElement;
     if (is_dark) {
       html.classList.add("dark");

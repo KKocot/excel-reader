@@ -14,6 +14,8 @@ import { Link } from "react-router-dom";
 import { format, addDays } from "date-fns";
 import { createDate } from "@/lib/utils";
 
+const WEEK_FILTER_ALL = "all";
+
 interface ClassesFiltersProps {
   sort: Sort;
   show_dates: boolean;
@@ -44,7 +46,7 @@ const ClassesFilters = ({
   on_week_to_change,
 }: ClassesFiltersProps) => {
   const handle_week_from_change = (value: string) => {
-    if (value === "all") {
+    if (value === WEEK_FILTER_ALL) {
       on_week_from_change(null);
       return;
     }
@@ -53,7 +55,7 @@ const ClassesFilters = ({
   };
 
   const handle_week_to_change = (value: string) => {
-    if (value === "all") {
+    if (value === WEEK_FILTER_ALL) {
       on_week_to_change(null);
       return;
     }
@@ -159,14 +161,14 @@ const ClassesFilters = ({
                 Od tygodnia
               </Label>
               <Select
-                value={week_from?.toString() ?? "all"}
+                value={week_from?.toString() ?? WEEK_FILTER_ALL}
                 onValueChange={handle_week_from_change}
               >
                 <SelectTrigger id="week-from">
                   <SelectValue placeholder="Wszystkie" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">Wszystkie</SelectItem>
+                  <SelectItem value={WEEK_FILTER_ALL}>Wszystkie</SelectItem>
                   {week_options.map((week) => (
                     <SelectItem key={week} value={week.toString()}>
                       {format_week_option(week)}
@@ -185,14 +187,14 @@ const ClassesFilters = ({
                 Do tygodnia
               </Label>
               <Select
-                value={week_to?.toString() ?? "all"}
+                value={week_to?.toString() ?? WEEK_FILTER_ALL}
                 onValueChange={handle_week_to_change}
               >
                 <SelectTrigger id="week-to">
                   <SelectValue placeholder="Wszystkie" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">Wszystkie</SelectItem>
+                  <SelectItem value={WEEK_FILTER_ALL}>Wszystkie</SelectItem>
                   {week_options.map((week) => (
                     <SelectItem key={week} value={week.toString()}>
                       {format_week_option(week)}

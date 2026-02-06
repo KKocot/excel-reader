@@ -1,4 +1,4 @@
-import ClassesGroupItem from "./classes-group-item";
+import ClassesGroupItem from "./ClassesGroupItem";
 import { Sort, WeekItem } from "@/types";
 import { useMemo } from "react";
 

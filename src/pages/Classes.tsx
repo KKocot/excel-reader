@@ -3,9 +3,14 @@ import { useLocation } from "react-router";
 import Papa from "papaparse";
 import * as XLSX from "xlsx-js-style";
 import { getWeek } from "date-fns";
-import { getSchool } from "@/lib/utils";
+import {
+  getSchool,
+  is_unknown_array,
+  is_record,
+  is_string,
+} from "@/lib/utils";
 import { raportGenarator } from "@/lib/raport-genarator";
-import DownloadClassesRaport from "@/components/download-classes-raport";
+import DownloadClassesRaport from "@/components/DownloadClassesRaport";
 import ClassesUpload from "@/components/classes/ClassesUpload";
 import ClassesFilters from "@/components/classes/ClassesFilters";
 import ClassesList from "@/components/classes/ClassesList";
@@ -21,6 +26,7 @@ import { ClassesGroupProps, RawCellValue, RawTableData } from "@/types";
 const Classes = () => {
   const [json_result, set_json_result] = useState<ClassesGroupProps[][]>([]);
   const [raw_data, set_raw_data] = useState<RawTableData[]>([]);
+  const [error_message, set_error_message] = useState<string | null>(null);
   const {
     sort,
     show_dates,
@@ -58,25 +64,33 @@ const Classes = () => {
           header: true,
           skipEmptyLines: true,
           complete: (result) => {
-            const parsed_data = result.data as unknown[];
+            if (!is_unknown_array(result.data)) {
+              set_error_message("Nieprawidłowy format danych w pliku CSV");
+              return;
+            }
+
+            const parsed_data = result.data;
             if (is_kwap_format(parsed_data)) {
               set_json_result((prev) => [...prev, parsed_data]);
             } else {
               // Not Kwap format - treat as raw table
               // Convert to array of arrays
-              const raw_rows = parsed_data.map((row) =>
-                Object.values(row as Record<string, unknown>).map(
-                  (cell) => cell as RawCellValue
-                )
-              );
-              const headers = ((result.meta.fields as string[]) || []).map(
-                (h) => h as RawCellValue
-              );
+              const raw_rows = parsed_data
+                .filter(is_record)
+                .map((row) =>
+                  Object.values(row).map((cell) => cell as RawCellValue)
+                );
+
+              const headers =
+                result.meta.fields && Array.isArray(result.meta.fields)
+                  ? result.meta.fields.filter(is_string).map((h) => h as RawCellValue)
+                  : [];
+
               set_raw_data((prev) => [...prev, [headers, ...raw_rows]]);
             }
           },
           error: (error) => {
-            console.error("CSV parsing error:", error.message);
+            set_error_message(`Błąd parsowania CSV: ${error.message}`);
           },
         });
       } else if (
@@ -101,22 +115,38 @@ const Classes = () => {
                   header: 1,
                 }
               );
-              // Cast to RawTableData
-              const sheet_data: RawTableData = sheet_data_raw.map((row) =>
-                (row as unknown[]).map((cell) => cell as RawCellValue)
-              );
+
+              // Validate and convert to RawTableData
+              if (!is_unknown_array(sheet_data_raw)) {
+                set_error_message("Nieprawidłowy format danych w pliku Excel");
+                return;
+              }
+
+              const sheet_data: RawTableData = sheet_data_raw
+                .filter(is_unknown_array)
+                .map((row) =>
+                  row.map((cell) => cell as RawCellValue)
+                );
 
               // Try to convert to Kwap format
               // First row = headers, rest = data
               if (sheet_data.length > 1) {
-                const headers = sheet_data[0] as string[];
+                const first_row = sheet_data[0];
+                if (!is_unknown_array(first_row)) {
+                  set_raw_data((prev) => [...prev, sheet_data]);
+                  return;
+                }
+
+                const headers = first_row.filter(is_string);
                 const rows = sheet_data.slice(1);
 
                 // Convert to objects
                 const objects = rows.map((row_array) => {
                   const row_obj: Record<string, unknown> = {};
                   headers.forEach((header, idx) => {
-                    row_obj[header] = (row_array as unknown[])[idx];
+                    if (is_unknown_array(row_array)) {
+                      row_obj[header] = row_array[idx];
+                    }
                   });
                   return row_obj;
                 });
@@ -132,12 +162,16 @@ const Classes = () => {
                 set_raw_data((prev) => [...prev, sheet_data]);
               }
             } catch (error) {
-              console.error("Excel parsing error:", error);
+              set_error_message(
+                `Błąd parsowania pliku Excel: ${error instanceof Error ? error.message : "Nieznany błąd"}`
+              );
             }
           }
         };
         reader.onerror = () => {
-          console.error("File reading error:", reader.error?.message);
+          set_error_message(
+            `Błąd odczytu pliku: ${reader.error?.message || "Nieznany błąd"}`
+          );
         };
         reader.readAsArrayBuffer(file);
       }
@@ -152,6 +186,8 @@ const Classes = () => {
     if (state?.uploaded_files && state.uploaded_files.length > 0) {
       parse_files(state.uploaded_files);
     }
+    // parse_files is stable and doesn't need to be in deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.state]);
 
   const handle_file_upload = (event: ChangeEvent<HTMLInputElement>): void => {
@@ -166,6 +202,18 @@ const Classes = () => {
   return (
     <div className="p-4 flex flex-col items-center gap-8">
       <h1 className="text-4xl font-bold">Zajecia</h1>
+
+      {error_message && (
+        <div className="w-full max-w-2xl bg-red-100 dark:bg-red-900/20 border border-red-400 dark:border-red-700 text-red-700 dark:text-red-300 px-4 py-3 rounded relative">
+          <span className="block sm:inline">{error_message}</span>
+          <button
+            className="absolute top-0 bottom-0 right-0 px-4 py-3"
+            onClick={() => set_error_message(null)}
+          >
+            <span className="text-2xl">&times;</span>
+          </button>
+        </div>
+      )}
 
       <div className="justify-center w-full items-center gap-8 grid-cols-2 grid">
         <ClassesUpload

@@ -5,7 +5,17 @@ import { Sort, StatusColor } from "@/types";
  * Custom hook for managing Classes filtering state
  * Handles color filter toggles (red/green/yellow), show all dates option, and week range filtering
  */
-export function useClassesFilter() {
+export function useClassesFilter(): {
+  sort: Sort;
+  show_dates: boolean;
+  week_from: number | null;
+  week_to: number | null;
+  toggle_color: (color: StatusColor) => void;
+  toggle_show_all: () => void;
+  set_week_from_filter: (value: number | null) => void;
+  set_week_to_filter: (value: number | null) => void;
+  reset_filters: () => void;
+} {
   const [sort, set_sort] = useState<Sort>({
     red: true,
     green: true,

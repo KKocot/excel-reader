@@ -10,7 +10,7 @@ import Header from "./pages/Header";
 import Classes from "./pages/Classes";
 import WeekCalendar from "./pages/WeekCalendar";
 import NotFound from "./pages/NotFound";
-import ErrorBoundary from "./components/error-boundary";
+import ErrorBoundary from "./components/ErrorBoundary";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
