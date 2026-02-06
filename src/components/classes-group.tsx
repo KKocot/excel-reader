@@ -1,32 +1,19 @@
-import { ClassStatus, StatusColor } from "@/lib/raport-genarator";
+import { ListProps, Sort } from "@/types";
 import ClassesGroupPairs from "./classes-group-pairs";
-import { Sort } from "@/pages/Classes";
 import { Badge } from "./ui/badge";
-
-export interface WeekItem {
-  week: number;
-  check: boolean;
-  status: ClassStatus;
-  status_color: StatusColor;
-}
-export interface ListItem {
-  connected: number;
-  pair: string;
-  fullWeeks: WeekItem[];
-}
-export interface ListProps {
-  title: string;
-  list: ListItem[];
-}
 
 const ClassesGroup = ({
   schoolList,
   sort,
   showDates,
+  week_from,
+  week_to,
 }: {
   schoolList: ListProps;
   sort: Sort;
   showDates: boolean;
+  week_from: number | null;
+  week_to: number | null;
 }) => {
   return (
     <div>
@@ -34,9 +21,9 @@ const ClassesGroup = ({
       {schoolList.list.map((item, index) => (
         <div
           key={`${item.pair}-${schoolList.title}`}
-          className="border-b border-border hover:bg-muted/40 transition-all duration-200 hover:shadow-sm group flex"
+          className="border-b border-border hover:bg-muted/40 transition-all duration-200 hover:shadow-sm group flex animate-fade-in-row"
           style={{
-            animation: `fadeInRow 0.3s ease-out ${index * 0.05}s both`,
+            animationDelay: `${index * 0.05}s`,
           }}
         >
           <div className="flex">
@@ -58,6 +45,8 @@ const ClassesGroup = ({
             item={item.fullWeeks}
             sort={sort}
             showDates={showDates}
+            week_from={week_from}
+            week_to={week_to}
           />
         </div>
       ))}
