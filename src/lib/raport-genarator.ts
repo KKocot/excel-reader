@@ -1,17 +1,11 @@
 import { getWeek } from "date-fns";
+import { ClassesGroupProps, ClassStatus, Item } from "@/types";
 
-export type StatusColor = "red" | "green" | "yellow";
-export interface Item {
-  pair: string;
-  classes: { week: number; status: ClassStatus; status_color: StatusColor }[];
-  connected: number;
-}
-
-export interface ClassesGroupProps {
-  Textbox5: string;
-  __parsed_extra: unknown[];
-}
-
+/**
+ * Main report generator function
+ * Transforms raw CSV data into structured report grouped by school
+ * Deduplicates schools if same school appears in multiple CSV files
+ */
 export function raportGenarator(jsonResult: ClassesGroupProps[][] | null) {
   if (!jsonResult) return null;
   const sortedList = jsonResult.map((list) => {
@@ -21,24 +15,97 @@ export function raportGenarator(jsonResult: ClassesGroupProps[][] | null) {
     const cleanList = list.length > 2 ? getList(list.slice(2)) : [];
     return { title, list: cleanList };
   });
-  return sortedList;
+
+  // Deduplicate schools by title using Map for O(1) lookup
+  const schools_map = new Map<string, { title: string; list: ReturnType<typeof getList> }>();
+
+  sortedList.forEach((current) => {
+    const existing = schools_map.get(current.title);
+
+    if (existing) {
+      // Merge lists: combine pairs, merge weekItems for duplicate pairs
+      const pairs_map = new Map<string, ReturnType<typeof getList>[number]>();
+
+      // Index existing pairs
+      existing.list.forEach((pair) => {
+        pairs_map.set(pair.pair, pair);
+      });
+
+      // Merge or add new pairs
+      current.list.forEach((new_pair) => {
+        const existing_pair = pairs_map.get(new_pair.pair);
+
+        if (existing_pair) {
+          // Merge fullWeeks immutably
+          const existing_weeks_set = new Set(existing_pair.fullWeeks.map((w) => w.week));
+          const new_weeks = new_pair.fullWeeks.filter((w) => !existing_weeks_set.has(w.week));
+          pairs_map.set(new_pair.pair, {
+            ...existing_pair,
+            fullWeeks: [...existing_pair.fullWeeks, ...new_weeks]
+          });
+        } else {
+          // Add new pair
+          pairs_map.set(new_pair.pair, new_pair);
+        }
+      });
+
+      // Update existing school with merged pairs
+      schools_map.set(current.title, {
+        ...existing,
+        list: Array.from(pairs_map.values())
+      });
+    } else {
+      // Add new school
+      schools_map.set(current.title, current);
+    }
+  });
+
+  // Sort fullWeeks for all pairs after all merges are done
+  const deduplicated = Array.from(schools_map.values());
+  deduplicated.forEach((school) => {
+    school.list.forEach((pair) => {
+      pair.fullWeeks.sort((a, b) => a.week - b.week);
+    });
+  });
+
+  return deduplicated;
 }
 
 function getTitles(list: ClassesGroupProps[]) {
   // School name is in the first element of the list
   return list[0].Textbox5.split("\r")[0].replace(" / Szkoła Podstawowa", "");
 }
-export type ClassStatus =
-  | "spotkanie_do_akceptacji"
-  | "spotkanie_zaakceptowane"
-  | "odwolal_wolontariusz"
-  | "wydarzenie_do_akceptacji"
-  | "odwolalo_dziecko"
-  | "wydarzenie_zaakceptowane"
-  | "brak_zajec"
-  | "odrabianie_zajec_zaakceptowane"
-  | "odrabianie_zajec_do_akceptacji"
-  | null;
+
+/**
+ * Maps ClassStatus to color for UI display
+ * green: accepted/scheduled meetings
+ * yellow: cancelled by volunteer/student
+ * red: no classes or unknown status
+ */
+/**
+ * Type guard to check if value is a string
+ */
+function is_string(value: unknown): value is string {
+  return typeof value === "string";
+}
+
+/**
+ * Type guard to check if value is a valid ClassStatus
+ */
+function is_class_status(value: unknown): value is ClassStatus {
+  const valid_statuses: ClassStatus[] = [
+    "spotkanie_do_akceptacji",
+    "spotkanie_zaakceptowane",
+    "odwolal_wolontariusz",
+    "odwolalo_dziecko",
+    "brak_zajec",
+    "wydarzenie_do_akceptacji",
+    "wydarzenie_zaakceptowane",
+    "odrabianie_zajec_zaakceptowane",
+    "odrabianie_zajec_do_akceptacji",
+  ];
+  return typeof value === "string" && valid_statuses.includes(value as ClassStatus);
+}
 
 const getColorStatus = (status: ClassStatus) => {
   switch (status) {
@@ -61,12 +128,18 @@ const getColorStatus = (status: ClassStatus) => {
 function getList(list: ClassesGroupProps[]) {
   const clearList = list
     // Move all data to from __parsed_extra to main object
-    .map((e) => ({
-      week: e.Textbox5,
-      date: (e.__parsed_extra?.[0] as string) || null,
-      pair: (e.__parsed_extra?.[1] as string) || null,
-      class: (e.__parsed_extra?.[2] as ClassStatus) || null,
-    }))
+    .map((e) => {
+      const date_value = e.__parsed_extra?.[0];
+      const pair_value = e.__parsed_extra?.[1];
+      const class_value = e.__parsed_extra?.[2];
+
+      return {
+        week: e.Textbox5,
+        date: is_string(date_value) ? date_value : null,
+        pair: is_string(pair_value) ? pair_value : null,
+        class: is_class_status(class_value) ? class_value : null,
+      };
+    })
     // Filter out all empty elements
     .filter(
       (
