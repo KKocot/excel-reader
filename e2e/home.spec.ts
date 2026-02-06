@@ -23,6 +23,44 @@ test.describe("Home Page", () => {
     await expect(githubLink).toHaveAttribute("target", "_blank");
   });
 
+  test("should display file upload button", async ({ page }) => {
+    await page.goto("/");
+
+    // Check for file upload button
+    const uploadButton = page.locator('button:has-text("Wgraj plik CSV")');
+    await expect(uploadButton).toBeVisible();
+  });
+
+  test("should display sample file download links", async ({ page }) => {
+    await page.goto("/");
+
+    // Check for sample file links
+    const sampleLinks = page.locator('a[download][href*="/sample/"]');
+    await expect(sampleLinks).toHaveCount(4);
+
+    // Verify links have underline styling
+    const firstLink = sampleLinks.first();
+    await expect(firstLink).toHaveClass(/underline/);
+  });
+
+  test("should show confirmation dialog on sample file download", async ({
+    page,
+  }) => {
+    await page.goto("/");
+
+    // Setup dialog handler
+    page.once("dialog", (dialog) => {
+      expect(dialog.message()).toBe(
+        "Czy na pewno chcesz pobrać plik przykładowy?"
+      );
+      dialog.dismiss();
+    });
+
+    // Click first sample file link
+    const firstSampleLink = page.locator('a[href="/sample/3_KS_w_szkolach1.csv"]');
+    await firstSampleLink.click();
+  });
+
   test("should navigate to classes page", async ({ page }) => {
     await page.goto("/");
 
